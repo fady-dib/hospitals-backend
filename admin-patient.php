@@ -14,7 +14,10 @@ $query_hospitals->store_result();
 $num_rows_hospitals = $query_hospitals->num_rows();
 $query_hospitals->bind_result($hospital_id, $hospital_name);
 
-$response = [];
+$response = [
+    'patients' => [],
+    'hospitals' => [],
+];
 
 if ($num_rows_patients == 0) {
     $response['response'] = 'All patients are assigned';
@@ -28,14 +31,14 @@ else{
             'patient_name' => $patient_name,
             'patient_id' => $patient_id,
         );
-        array_push($response, $patient_data);
+        array_push($response['patients'], $patient_data);
     }
     while($query_hospitals -> fetch()) {
         $hospitals_data = array(
             'hospital_id' => $hospital_id,
             'Hospital_name' => $hospital_name,
         );
-        array_push($response, $hospitals_data);
+        array_push($response['hospitals'], $hospitals_data);
     }
 }
 
