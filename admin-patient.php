@@ -26,7 +26,7 @@ else{
     while($query_patients -> fetch()){
         $patient_data =array(
             'patient_name' => $patient_name,
-            'patient_id' => $patinet_id,
+            'patient_id' => $patient_id,
         );
         array_push($response, $patient_data);
     }
