@@ -20,6 +20,7 @@ else{
     if(password_verify($password, $hashed_password)){
         $response['response'] = "Logged in";
         $response['usertype'] = $usertype_id;
+        $response['user_id'] = $id;
     }
     else{
         $response['response'] = "Incorrect password";
