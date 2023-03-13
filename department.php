@@ -4,7 +4,7 @@ include('connection.php');
 
 $user_id = $_POST['user_id'];
 
-$query_department = $mysqli -> prepare('SELECT id,name  from departments inner join hospital_users on departments.hospital_id = hospital_users.hospital_id where user_id=?');
+$query_department = $mysqli -> prepare('SELECT DISTINCT id,name  from departments inner join hospital_users on departments.hospital_id = hospital_users.hospital_id where user_id=?');
 $query_department -> bind_param('i',$user_id);
 $query_department -> execute();
 $query_department -> store_result();
