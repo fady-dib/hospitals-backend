@@ -19,7 +19,7 @@ if (!empty($employee_id) && !empty($hospitals_id)) {
         if ($query->execute()) {
             $response['response'] = "Employee was succesfuly assigned";
         } else {
-            $response['response'] = $mysqli->error;
+            $response['response'] =  mysqli_stmt_error($query);
         }
     }
 } else {

@@ -17,8 +17,9 @@ if($num_rows == 0){
     $response['response'] = "User not found";
 }
 else{
-    if(password_verify($password, $hashed_password)){
-        $response['response'] = "Logged in";
+    $hash_p = md5($password);
+    if(($password == $hashed_password)){
+        $response['response'] = "Loggedin";
         $response['usertype'] = $usertype_id;
         $response['user_id'] = $id;
     }

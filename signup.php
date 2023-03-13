@@ -28,7 +28,7 @@ if (empty($email)) {
 
 
     if ($exists > 0) {
-        $response['response'] = "Already registred";
+        $response['response'] = "Already registered";
     } else {
         $query = $mysqli->prepare('insert into users(name,email,password,dob,usertype_id) values(?,?,?,?,?)');
         $query->bind_param('ssssi', $name, $email, $password, $dob, $usertype_id);

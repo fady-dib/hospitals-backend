@@ -2,7 +2,7 @@
 
 include('connection.php');
 
-$query_patients = $mysqli->prepare('select id,name from users inner join hospital_users on users.id = hospital_users.user_id where usertype_id = 2 and is_active = 0');
+$query_patients = $mysqli->prepare('select id,name from users where usertype_id = 2 and assigned = 0');
 $query_patients->execute();
 $query_patients->store_result();
 $num_rows_patients = $query_patients->num_rows();
@@ -36,7 +36,7 @@ else{
     while($query_hospitals -> fetch()) {
         $hospitals_data = array(
             'hospital_id' => $hospital_id,
-            'Hospital_name' => $hospital_name,
+            'hospital_name' => $hospital_name,
         );
         array_push($response['hospitals'], $hospitals_data);
     }
