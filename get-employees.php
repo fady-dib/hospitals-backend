@@ -36,7 +36,7 @@ else{
     while($query_hospitals -> fetch()) {
         $hospitals_data = [
             'hospital_id' => $hospital_id,
-            'Hospital_name' => $hospital_name,
+            'hospital_name' => $hospital_name,
         ];
         array_push($response['hospitals'], $hospitals_data);
     }

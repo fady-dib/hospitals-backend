@@ -13,8 +13,6 @@ $query_department -> bind_result($department_id, $department_name);
 
 $response= [
     'departments' => [],
-    'rooms' => [],
-    'beds' => []
 ];
 
 while($query_department -> fetch()){
