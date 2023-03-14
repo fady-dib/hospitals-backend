@@ -18,6 +18,7 @@ if($num_rows == 0){
 }
 else{
     $hash_p = md5($password);
+    // $a =password_verify()
     if(($password == $hashed_password)){
         $response['response'] = "Loggedin";
         $response['usertype'] = $usertype_id;

@@ -4,63 +4,57 @@ include('connection.php');
 
 $user_id = $_POST['user_id'];
 
-$query_department = $mysqli -> prepare('SELECT DISTINCT id,name  from departments inner join hospital_users on departments.hospital_id = hospital_users.hospital_id where user_id=?');
-$query_department -> bind_param('i',$user_id);
-$query_department -> execute();
-$query_department -> store_result();
-$num_rows_department = $query_department -> num_rows();
-$query_department -> bind_result($department_id, $department_name);
+$query_department = $mysqli->prepare('SELECT DISTINCT id,name  from departments inner join hospital_users on departments.hospital_id = hospital_users.hospital_id where user_id=?');
+$query_department->bind_param('i', $user_id);
+$query_department->execute();
+$query_department->store_result();
+$num_rows_department = $query_department->num_rows();
+$query_department->bind_result($department_id, $department_name);
 
-$response= [
+$query_medications = $mysqli->prepare('SELECT id, name, cost from medications where quantity>0');
+$query_medications->execute();
+$query_medications->store_result();
+$num_rows_medications = $query_medications->num_rows();
+$query_medications->bind_result($medication_id, $medication_name, $medication_cost);
+
+$response = [
     'departments' => [],
+    'medications' => [],
 ];
-
-while($query_department -> fetch()){
-    $department_data =[
+if($num_rows_department > 0){
+while ($query_department->fetch()) {
+    $department_data = [
         'department_id' => $department_id,
         'department_name' => $department_name,
     ];
     array_push($response['departments'], $department_data);
 }
+}
+else{
+    $response['status'] = 100 ; // no available departments
+}
 
-// if($num_rows_department > 0) {
-//     $query_rooms_beds =$mysqli -> prepare('SELECT rooms.id, room_number, beds.id, bed_number  from rooms inner join beds on rooms.id = beds.room_id where department_id=? and occupied = 0');
-//     $query_rooms_beds->bind_param('i', $department_id);
-//     $query_rooms_beds->execute();
-//     $query_rooms_beds->store_result();
-//     $num_rows_rooms_beds = $query_rooms_beds -> num_rows();
-//     $query_rooms_beds -> bind_result($room_id, $room_number, $bed_id, $bed_number);
+if($num_rows_medications > 0){
+    while($query_medications -> fetch()){
+        $medications_data = [
+            'medication_id' => $medication_id,
+            'medication_name' => $medication_name,
+            'medication_cost' => $medication_cost
+        ];
+        array_push($response['medications'], $medications_data);
+    }
+}
+else{
+    $response['status'] = 101; // no available medictions
+}
 
-//     if($num_rows_rooms_beds == 0){
-//         $response['response'] = "No available rooms";
-//     }
-//     else{
-       
-//         while($query_rooms_beds -> fetch()){
-//             $rooms_data =[
-//                 'room_id' => $room_id,
-//                 'room_number' => $room_number,
-//             ];
-//             $beds_data =[
-//                 'bed_id' => $bed_id,
-//                 'bed_number' => $bed_number,
-//             ];
-//             array_push($response['rooms'], $rooms_data);
-//             array_push($response['beds'], $beds_data);
-//         }
-        
-//     }
-
-//     $query_rooms_beds->free_result();
-//     $query_rooms_beds->close();
-
-// }
-// else{
-//     $response['response'] = 'Patient is not assigned to a hospital';
-// }
 
 $query_department->free_result();
 $query_department->close();
+
+
+$query_medications->free_result();
+$query_medications->close();
 
 echo json_encode($response);
 
